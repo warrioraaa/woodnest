@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>WoodNest – Агрегатор домов и бань</title>
+  <title>WoodNest – Агрегатор проектов домов и бань</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -43,7 +43,7 @@
           <option>Каркас</option>
         </select>
 
-        <label for="area">Площадь до, м²\xb2:</label>
+        <label for="area">Площадь до, м²:</label>
         <input type="number" id="area" />
 
         <label for="price">Цена до, ₽:</label>
@@ -64,24 +64,6 @@
   <footer>
     <p>&copy; 2025 WoodNest. Все права защищены.</p>
   </footer>
-
-  <div id="modal" class="modal hidden">
-    <div class="modal-content">
-      <h3>Заявка на проект</h3>
-      <p id="selected-title"></p>
-      <form id="apply-form">
-        <input type="hidden" id="project-id" />
-        <label>Имя:</label>
-        <input type="text" id="name" required />
-        <label>Телефон:</label>
-        <input type="tel" id="phone" required />
-        <label>Комментарий:</label>
-        <textarea id="comment"></textarea>
-        <button type="submit" class="btn">Отправить</button>
-      </form>
-      <button id="modal-close" class="btn">Закрыть</button>
-    </div>
-  </div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
   <script src="script.custom.js"></script>
