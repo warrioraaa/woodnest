@@ -1,91 +1,91 @@
-const supabaseUrl = 'https://suxdmfaephdlrjqxrgfs.supabase.co';
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN1eGRtZmFlcGhkbHJqcXhyZ2ZzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA4NzQ5MjgsImV4cCI6MjA2NjQ1MDkyOH0.4GcTn76XxkxIfxpXbZZvdchMnqNoy8PZG2U1u-XymiQ';
-const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>WoodNest – Агрегатор проектов домов и бань</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header>
+    <h1>WoodNest</h1>
+    <nav>
+      <ul>
+        <li><a href="#projects">Проекты</a></li>
+        <li><a href="#filters">Фильтры</a></li>
+        <li><a href="#contact">Контакты</a></li>
+      </ul>
+    </nav>
+  </header>
 
-async function loadProjects(filters = {}) {
-  const container = document.getElementById('projects-container');
-  container.innerHTML = '<p>Загрузка...</p>';
+  <main>
+    <section id="hero">
+      <h2>Найдите идеальный проект дома или бани</h2>
+      <p>Фильтруйте по типу, площади, материалу и цене</p>
+      <a href="#projects" class="btn">Начать поиск</a>
+    </section>
 
-  let query = supabase.from('projects').select('*');
+    <section id="filters">
+      <h3>Фильтры</h3>
+      <form id="filters-form">
+        <label for="type">Тип:</label>
+        <select id="type">
+          <option value="">Любой</option>
+          <option>Дом</option>
+          <option>Баня</option>
+        </select>
 
-  // Фильтры
-  if (filters.type) query = query.ilike('type', `%${filters.type}%`);
-  if (filters.material) query = query.ilike('material', `%${filters.material}%`);
-  if (filters.area) query = query.lte('area', filters.area);
-  if (filters.price) query = query.lte('price', filters.price);
+        <label for="material">Материал:</label>
+        <select id="material">
+          <option value="">Любой</option>
+          <option>Брус</option>
+          <option>Бревно</option>
+          <option>Каркас</option>
+        </select>
 
-  const { data, error } = await query;
+        <label for="area">Площадь до, м²:</label>
+        <input type="number" id="area" />
 
-  if (error) {
-    container.innerHTML = '<p>Ошибка при загрузке проектов.</p>';
-    console.error(error);
-    return;
-  }
+        <label for="price">Цена до, ₽:</label>
+        <input type="number" id="price" />
 
-  if (data.length === 0) {
-    container.innerHTML = '<p>Проекты не найдены по заданным параметрам.</p>';
-    return;
-  }
+        <button type="submit" class="btn">Показать</button>
+      </form>
+    </section>
 
-  container.innerHTML = data.map(project => `
-    <div class="project-card">
-      <img src="${project.image_url}" alt="${project.title}" class="project-img" />
-      <h3>${project.title}</h3>
-      <p><strong>Тип:</strong> ${project.type}</p>
-      <p><strong>Материал:</strong> ${project.material}</p>
-      <p><strong>Площадь:</strong> ${project.area} м²</p>
-      <p><strong>Цена:</strong> ${project.price.toLocaleString()} ₽</p>
-      <p>${project.description}</p>
-      <button class="btn" onclick="openModal('${project.id}', '${project.title}')">Оставить заявку</button>
+    <section id="projects">
+      <h3>Примеры проектов</h3>
+      <div id="projects-container">
+        <p>Загрузка проектов...</p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 WoodNest. Все права защищены.</p>
+  </footer>
+
+  <!-- Модальное окно -->
+  <div id="modal" class="modal hidden">
+    <div class="modal-content">
+      <h3>Заявка на проект</h3>
+      <p id="selected-title"></p>
+      <form id="apply-form">
+        <input type="hidden" id="project-id" />
+        <label>Имя:</label>
+        <input type="text" id="name" required />
+        <label>Телефон:</label>
+        <input type="tel" id="phone" required />
+        <label>Комментарий:</label>
+        <textarea id="comment"></textarea>
+        <button type="submit" class="btn">Отправить</button>
+      </form>
+      <button id="modal-close">Закрыть</button>
     </div>
-  `).join('');
-}
+  </div>
 
-// Загрузка при запуске
-document.addEventListener('DOMContentLoaded', () => {
-  loadProjects();
-});
-
-// Обработка фильтра
-document.getElementById('filters-form').addEventListener('submit', e => {
-  e.preventDefault();
-  const type = document.getElementById('type').value;
-  const material = document.getElementById('material').value;
-  const area = document.getElementById('area').value;
-  const price = document.getElementById('price').value;
-
-  loadProjects({ type, material, area, price });
-});
-
-// Модальное окно
-function openModal(id, title) {
-  document.getElementById('modal').classList.remove('hidden');
-  document.getElementById('project-id').value = id;
-  document.getElementById('selected-title').textContent = title;
-}
-
-document.getElementById('modal-close').addEventListener('click', () => {
-  document.getElementById('modal').classList.add('hidden');
-});
-
-// Отправка заявки
-document.getElementById('apply-form').addEventListener('submit', async e => {
-  e.preventDefault();
-  const name = document.getElementById('name').value.trim();
-  const phone = document.getElementById('phone').value.trim();
-  const comment = document.getElementById('comment').value.trim();
-  const projectId = document.getElementById('project-id').value;
-
-  const { error } = await supabase.from('applications').insert([
-    { name, phone, comment, project_id: projectId }
-  ]);
-
-  if (error) {
-    alert('Ошибка при отправке заявки.');
-    console.error(error);
-  } else {
-    alert('Заявка отправлена!');
-    document.getElementById('apply-form').reset();
-    document.getElementById('modal').classList.add('hidden');
-  }
-});
+  <!-- Подключение Supabase и JS -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+  <script src="script.custom.js"></script>
+</body>
+</html>
