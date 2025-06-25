@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -18,36 +17,56 @@
       </ul>
     </nav>
   </header>
+
   <main>
     <section id="hero">
       <h2>Найдите идеальный проект дома или бани</h2>
       <p>Фильтруйте по типу, площади, материалу и цене</p>
       <a href="#projects" class="btn">Начать поиск</a>
     </section>
+
     <section id="filters">
       <h3>Фильтры</h3>
       <form>
         <label for="type">Тип:</label>
-        <select id="type"><option>Дом</option><option>Баня</option></select>
+        <select id="type">
+          <option value="">Любой</option>
+          <option>Дом</option>
+          <option>Баня</option>
+        </select>
+
         <label for="material">Материал:</label>
-        <select id="material"><option>Брус</option><option>Бревно</option><option>Каркас</option></select>
+        <select id="material">
+          <option value="">Любой</option>
+          <option>Брус</option>
+          <option>Бревно</option>
+          <option>Каркас</option>
+        </select>
+
         <label for="area">Площадь до, м²:</label>
         <input type="number" id="area" />
+
         <label for="price">Цена до, ₽:</label>
         <input type="number" id="price" />
+
         <button type="submit" class="btn">Показать</button>
       </form>
     </section>
+
     <section id="projects">
       <h3>Примеры проектов</h3>
-      <div class="project-card">
-        <h4>Баня из бруса «Кедровая»</h4>
-        <p>Площадь: 32 м² · Цена: 560 000 ₽ · Материал: Брус</p>
+      <div id="projects-container">
+        <p>Загрузка проектов...</p>
       </div>
     </section>
   </main>
+
   <footer>
     <p>&copy; 2025 WoodNest. Все права защищены.</p>
   </footer>
+
+  <!-- Подключаем Supabase и кастомный JS -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+  <script src="script.custom.js"></script>
 </body>
 </html>
