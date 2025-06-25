@@ -59,3 +59,36 @@ container.innerHTML = data.map(project => `
 
   fetchAndRenderProjects(); // начальная загрузка без фильтров
 });
+// Обработка модального окна
+document.addEventListener('click', e => {
+  if (e.target.classList.contains('btn-apply')) {
+    document.getElementById('modal').classList.remove('hidden');
+    document.getElementById('selected-title').textContent = e.target.dataset.title;
+    document.getElementById('project-id').value = e.target.dataset.id;
+  }
+});
+
+document.getElementById('modal-close').addEventListener('click', () => {
+  document.getElementById('modal').classList.add('hidden');
+});
+
+document.getElementById('apply-form').addEventListener('submit', async e => {
+  e.preventDefault();
+  const name = document.getElementById('name').value.trim();
+  const phone = document.getElementById('phone').value.trim();
+  const comment = document.getElementById('comment').value.trim();
+  const project_id = document.getElementById('project-id').value;
+
+  const { error } = await client.from('applications').insert([
+    { name, phone, comment, project_id }
+  ]);
+
+  if (error) {
+    alert('Ошибка при отправке заявки');
+    console.error(error);
+  } else {
+    alert('Заявка отправлена!');
+    document.getElementById('apply-form').reset();
+    document.getElementById('modal').classList.add('hidden');
+  }
+});
