@@ -1,34 +1,109 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>WoodNest – Проекты домов и бань</title>
-  <link rel="stylesheet" href="styles.css" />
-</head>
-<body>
-  <div class="overlay">
-    <header>
-      <h1 class="brand">WoodNest</h1>
-      <nav>
-        <ul>
-          <li><a href="#projects">Проекты</a></li>
-          <li><a href="#filters">Фильтры</a></li>
-          <li><a href="#contact">Контакты</a></li>
-        </ul>
-      </nav>
-    </header>
+/* Общие стили */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: url('background.png') no-repeat center center fixed;
+  background-size: cover;
+  color: #fff;
+}
 
-    <main>
-      <section class="hero">
-        <h2>Экологично. Уютно. По-настоящему.</h2>
-        <p>Выберите проект дома или бани из кедрового бруса — с фильтрами и визуализацией</p>
-        <a href="#filters" class="btn">Начать поиск</a>
-      </section>
-    </main>
-  </div>
+/* Полупрозрачная тёмная вуаль */
+.overlay {
+  background-color: rgba(0, 0, 0, 0.6);
+  min-height: 100vh;
+  padding: 0 20px;
+  display: flex;
+  flex-direction: column;
+}
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-  <script src="script.custom.js"></script>
-</body>
-</html>
+/* Шапка */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 30px 0;
+}
+
+.brand {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #f2d28f;
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 30px;
+  margin: 0;
+  padding: 0;
+}
+
+nav a {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s;
+}
+
+nav a:hover {
+  color: #f2d28f;
+}
+
+/* Главный блок */
+.hero {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  animation: fadeIn 2s ease-out;
+}
+
+.hero h2 {
+  font-size: 2.8rem;
+  margin-bottom: 15px;
+}
+
+.hero p {
+  font-size: 1.3rem;
+  max-width: 600px;
+  margin-bottom: 30px;
+}
+
+.btn {
+  padding: 12px 28px;
+  background-color: #f2d28f;
+  color: #000;
+  text-decoration: none;
+  font-weight: bold;
+  border-radius: 6px;
+  transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+  background-color: #e6c378;
+}
+
+/* Анимация появления */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Адаптивность */
+@media (max-width: 600px) {
+  .hero h2 {
+    font-size: 2rem;
+  }
+
+  .hero p {
+    font-size: 1rem;
+  }
+
+  nav ul {
+    flex-direction: column;
+    gap: 10px;
+  }
+}
