@@ -1,12 +1,12 @@
 const supabaseUrl = 'https://suxdmfaephdlrjqxrgfs.supabase.co';
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN1eGRtZmFlcGhkbHJqcXhyZ2ZzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA4NzQ5MjgsImV4cCI6MjA2NjQ1MDkyOH0.4GcTn76XxkxIfxpXbZZvdchMnqNoy8PZG2U1u-XymiQ';
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'; // сокращено
 const supabase = supabase.createClient(supabaseUrl, supabaseKey);
 
 const container = document.getElementById('projects-container');
 const form = document.getElementById('filters-form');
 const resetBtn = document.getElementById('reset-filters');
 
-// Загрузка проектов (с фильтрами или без)
+// Загрузка проектов
 async function loadProjects(filters = {}) {
   container.innerHTML = '<p>Загрузка проектов...</p>';
 
@@ -21,7 +21,7 @@ async function loadProjects(filters = {}) {
 
   if (error || !data) {
     container.innerHTML = '<p>Ошибка при загрузке проектов.</p>';
-    console.error('Ошибка Supabase:', error);
+    console.error('Supabase error:', error);
     return;
   }
 
@@ -43,32 +43,30 @@ async function loadProjects(filters = {}) {
   `).join('');
 }
 
-// Обработчик фильтрации
+// Фильтрация
 form.addEventListener('submit', async (e) => {
   e.preventDefault();
 
-  const type = document.getElementById('type').value.trim();
-  const material = document.getElementById('material').value.trim();
-  const area = parseFloat(document.getElementById('area').value);
-  const price = parseFloat(document.getElementById('price').value);
-
   const filters = {
-    ...(type && { type }),
-    ...(material && { material }),
-    ...(Number.isFinite(area) && { area }),
-    ...(Number.isFinite(price) && { price })
+    type: document.getElementById('type').value.trim(),
+    material: document.getElementById('material').value.trim(),
+    area: parseFloat(document.getElementById('area').value),
+    price: parseFloat(document.getElementById('price').value)
   };
+
+  if (isNaN(filters.area)) delete filters.area;
+  if (isNaN(filters.price)) delete filters.price;
 
   await loadProjects(filters);
 });
 
-// Обработчик сброса
+// Сброс фильтров
 resetBtn.addEventListener('click', async () => {
   form.reset();
-  await loadProjects(); // Показать все
+  await loadProjects(); // Загрузка всех
 });
 
-// Первая загрузка
+// Первичная загрузка
 document.addEventListener('DOMContentLoaded', () => {
-  loadProjects(); // Без фильтров
+  loadProjects();
 });
