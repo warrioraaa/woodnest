@@ -6,7 +6,7 @@ const container = document.getElementById('projects-container');
 const form = document.getElementById('filters-form');
 const resetBtn = document.getElementById('reset-filters');
 
-// Загрузка проектов
+// Загрузка проектов (с фильтрами или без)
 async function loadProjects(filters = {}) {
   container.innerHTML = '<p>Загрузка проектов...</p>';
 
@@ -21,7 +21,7 @@ async function loadProjects(filters = {}) {
 
   if (error || !data) {
     container.innerHTML = '<p>Ошибка при загрузке проектов.</p>';
-    console.error(error);
+    console.error('Ошибка Supabase:', error);
     return;
   }
 
@@ -43,31 +43,32 @@ async function loadProjects(filters = {}) {
   `).join('');
 }
 
-// Отправка фильтров
+// Обработчик фильтрации
 form.addEventListener('submit', async (e) => {
   e.preventDefault();
 
-  const filters = {
-    type: document.getElementById('type').value.trim(),
-    material: document.getElementById('material').value.trim(),
-    area: parseFloat(document.getElementById('area').value),
-    price: parseFloat(document.getElementById('price').value)
-  };
+  const type = document.getElementById('type').value.trim();
+  const material = document.getElementById('material').value.trim();
+  const area = parseFloat(document.getElementById('area').value);
+  const price = parseFloat(document.getElementById('price').value);
 
-  // Если пусто, передаём undefined
-  if (isNaN(filters.area)) delete filters.area;
-  if (isNaN(filters.price)) delete filters.price;
+  const filters = {
+    ...(type && { type }),
+    ...(material && { material }),
+    ...(Number.isFinite(area) && { area }),
+    ...(Number.isFinite(price) && { price })
+  };
 
   await loadProjects(filters);
 });
 
-// Сброс фильтров
+// Обработчик сброса
 resetBtn.addEventListener('click', async () => {
   form.reset();
-  await loadProjects(); // Показать все проекты
+  await loadProjects(); // Показать все
 });
 
-// Первичная загрузка
+// Первая загрузка
 document.addEventListener('DOMContentLoaded', () => {
-  loadProjects();
+  loadProjects(); // Без фильтров
 });
