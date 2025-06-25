@@ -6,7 +6,7 @@ const container = document.getElementById('projects-container');
 const form = document.getElementById('filters-form');
 const resetBtn = document.getElementById('reset-filters');
 
-// Загружает проекты с учётом фильтров (или без)
+// Загрузка проектов
 async function loadProjects(filters = {}) {
   container.innerHTML = '<p>Загрузка проектов...</p>';
 
@@ -14,8 +14,8 @@ async function loadProjects(filters = {}) {
 
   if (filters.type) query = query.eq('type', filters.type);
   if (filters.material) query = query.eq('material', filters.material);
-  if (filters.area) query = query.lte('area', filters.area);
-  if (filters.price) query = query.lte('price', filters.price);
+  if (Number.isFinite(filters.area)) query = query.lte('area', filters.area);
+  if (Number.isFinite(filters.price)) query = query.lte('price', filters.price);
 
   const { data, error } = await query;
 
@@ -43,30 +43,31 @@ async function loadProjects(filters = {}) {
   `).join('');
 }
 
-// Обработчик отправки фильтров
+// Отправка фильтров
 form.addEventListener('submit', async (e) => {
   e.preventDefault();
 
   const filters = {
     type: document.getElementById('type').value.trim(),
     material: document.getElementById('material').value.trim(),
-    area: parseInt(document.getElementById('area').value) || null,
-    price: parseInt(document.getElementById('price').value) || null
+    area: parseFloat(document.getElementById('area').value),
+    price: parseFloat(document.getElementById('price').value)
   };
+
+  // Если пусто, передаём undefined
+  if (isNaN(filters.area)) delete filters.area;
+  if (isNaN(filters.price)) delete filters.price;
 
   await loadProjects(filters);
 });
 
 // Сброс фильтров
 resetBtn.addEventListener('click', async () => {
-  document.getElementById('type').value = '';
-  document.getElementById('material').value = '';
-  document.getElementById('area').value = '';
-  document.getElementById('price').value = '';
-  await loadProjects(); // Загрузить все проекты
+  form.reset();
+  await loadProjects(); // Показать все проекты
 });
 
-// При загрузке страницы — показать все проекты
+// Первичная загрузка
 document.addEventListener('DOMContentLoaded', () => {
   loadProjects();
 });
