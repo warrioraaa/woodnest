@@ -1,11 +1,25 @@
+#projects-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
+  margin-top: 16px;
+}
 
-body { font-family: Arial, sans-serif; margin: 0; background: #f7f5f1; }
-header { background: #3f2c1c; color: white; padding: 20px; text-align: center; }
-nav ul { list-style: none; display: flex; justify-content: center; gap: 20px; padding: 0; }
-nav a { color: white; text-decoration: none; font-weight: bold; }
-#hero { background: #9c6c3c; color: white; padding: 40px 20px; text-align: center; }
-.btn { background: #5c3c1a; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; }
-section { padding: 20px; }
-.project-card { background: white; padding: 20px; margin: 10px 0; box-shadow: 0 0 5px rgba(0,0,0,0.1); }
-form label { display: block; margin-top: 10px; }
-form input, form select { width: 100%; padding: 8px; margin-top: 5px; }
+.project-card {
+  background-color: #fff;
+  padding: 16px;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+  transition: transform 0.2s ease;
+}
+
+.project-card:hover {
+  transform: translateY(-5px);
+}
+
+.project-img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin-bottom: 12px;
+}
