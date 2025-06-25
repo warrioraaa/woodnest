@@ -1,3 +1,4 @@
+<!-- 📁 index.html -->
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -6,25 +7,7 @@
   <title>WoodNest – Агрегатор проектов домов и бань</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
-<div id="modal" class="modal hidden">
-  <div class="modal-content">
-    <h3>Заявка на проект</h3>
-    <p id="selected-title"></p>
-    <form id="apply-form">
-      <input type="hidden" id="project-id" />
-      <label>Имя:</label>
-      <input type="text" id="name" required />
-      <label>Телефон:</label>
-      <input type="tel" id="phone" required />
-      <label>Комментарий:</label>
-      <textarea id="comment"></textarea>
-      <button type="submit" class="btn">Отправить</button>
-    </form>
-    <button id="modal-close">Закрыть</button>
-  </div>
-</div>
-
-  <body>
+<body>
   <header>
     <h1>WoodNest</h1>
     <nav>
@@ -83,7 +66,24 @@
     <p>&copy; 2025 WoodNest. Все права защищены.</p>
   </footer>
 
-  <!-- Подключаем Supabase и кастомный JS -->
+  <div id="modal" class="modal hidden">
+    <div class="modal-content">
+      <h3>Заявка на проект</h3>
+      <p id="selected-title"></p>
+      <form id="apply-form">
+        <input type="hidden" id="project-id" />
+        <label>Имя:</label>
+        <input type="text" id="name" required />
+        <label>Телефон:</label>
+        <input type="tel" id="phone" required />
+        <label>Комментарий:</label>
+        <textarea id="comment"></textarea>
+        <button type="submit" class="btn">Отправить</button>
+      </form>
+      <button id="modal-close">Закрыть</button>
+    </div>
+  </div>
+
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
   <script src="script.custom.js"></script>
 </body>
