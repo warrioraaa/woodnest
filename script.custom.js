@@ -1,6 +1,6 @@
 // ✅ Supabase подключается ТОЛЬКО после того, как загружена библиотека supabase-js
 const supabaseUrl = 'https://suxdmfaephdlrjqxrgfs.supabase.co';
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'; // Твой ключ
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN1eGRtZmFlcGhkbHJqcXhyZ2ZzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA4NzQ5MjgsImV4cCI6MjA2NjQ1MDkyOH0.4GcTn76XxkxIfxpXbZZvdchMnqNoy8PZG2U1u-XymiQ'; // Твой ключ
 const client = window.supabase.createClient(supabaseUrl, supabaseKey); // ⬅️ ключевой момент
 
 const container = document.getElementById('projects-container');
