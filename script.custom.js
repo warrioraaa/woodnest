@@ -1,6 +1,7 @@
+// ✅ Supabase подключается ТОЛЬКО после того, как загружена библиотека supabase-js
 const supabaseUrl = 'https://suxdmfaephdlrjqxrgfs.supabase.co';
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN1eGRtZmFlcGhkbHJqcXhyZ2ZzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA4NzQ5MjgsImV4cCI6MjA2NjQ1MDkyOH0.4GcTn76XxkxIfxpXbZZvdchMnqNoy8PZG2U1u-XymiQ';
-const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'; // Твой ключ
+const client = window.supabase.createClient(supabaseUrl, supabaseKey); // ⬅️ ключевой момент
 
 const container = document.getElementById('projects-container');
 const form = document.getElementById('filters-form');
@@ -10,7 +11,7 @@ const resetBtn = document.getElementById('reset-filters');
 async function loadProjects(filters = {}) {
   container.innerHTML = '<p>Загрузка проектов...</p>';
 
-  let query = supabase.from('projects').select('*');
+  let query = client.from('projects').select('*');
 
   if (filters.type) query = query.eq('type', filters.type);
   if (filters.material) query = query.eq('material', filters.material);
@@ -63,10 +64,10 @@ form.addEventListener('submit', async (e) => {
 // Сброс фильтров
 resetBtn.addEventListener('click', async () => {
   form.reset();
-  await loadProjects();
+  await loadProjects(); // Показать все
 });
 
-// Первичная загрузка
+// Загрузка всех проектов при старте
 document.addEventListener('DOMContentLoaded', () => {
   loadProjects();
 });
