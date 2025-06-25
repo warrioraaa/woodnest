@@ -1,72 +1,23 @@
 const supabaseUrl = 'https://suxdmfaephdlrjqxrgfs.supabase.co';
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'; // сокращено
-const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ...'; // ключ обрезан
+const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
 
-const container = document.getElementById('projects-container');
-const form = document.getElementById('filters-form');
-const resetBtn = document.getElementById('reset-filters');
+document.addEventListener('DOMContentLoaded', async () => {
+  const container = document.getElementById('projects-container');
+  const { data, error } = await supabase.from('projects').select('*');
 
-// Загрузка проектов
-async function loadProjects(filters = {}) {
-  container.innerHTML = '<p>Загрузка проектов...</p>';
-
-  let query = supabase.from('projects').select('*');
-
-  if (filters.type) query = query.eq('type', filters.type);
-  if (filters.material) query = query.eq('material', filters.material);
-  if (Number.isFinite(filters.area)) query = query.lte('area', filters.area);
-  if (Number.isFinite(filters.price)) query = query.lte('price', filters.price);
-
-  const { data, error } = await query;
-
-  if (error || !data) {
-    container.innerHTML = '<p>Ошибка при загрузке проектов.</p>';
-    console.error('Supabase error:', error);
-    return;
-  }
-
-  if (data.length === 0) {
-    container.innerHTML = '<p>Проекты не найдены по заданным параметрам.</p>';
+  if (error) {
+    container.innerHTML = 'Ошибка загрузки данных';
+    console.error(error);
     return;
   }
 
   container.innerHTML = data.map(p => `
     <div class="project-card">
-      <img src="${p.image_url}" alt="${p.title}" class="project-img" />
+      <img src="${p.image_url}" alt="${p.title}">
       <h3>${p.title}</h3>
-      <p><strong>Тип:</strong> ${p.type}</p>
-      <p><strong>Материал:</strong> ${p.material}</p>
-      <p><strong>Площадь:</strong> ${p.area} м²</p>
-      <p><strong>Цена:</strong> ${p.price.toLocaleString()} ₽</p>
+      <p>${p.type} · ${p.material} · ${p.area} м² · ${p.price} ₽</p>
       <p>${p.description}</p>
     </div>
   `).join('');
-}
-
-// Фильтрация
-form.addEventListener('submit', async (e) => {
-  e.preventDefault();
-
-  const filters = {
-    type: document.getElementById('type').value.trim(),
-    material: document.getElementById('material').value.trim(),
-    area: parseFloat(document.getElementById('area').value),
-    price: parseFloat(document.getElementById('price').value)
-  };
-
-  if (isNaN(filters.area)) delete filters.area;
-  if (isNaN(filters.price)) delete filters.price;
-
-  await loadProjects(filters);
-});
-
-// Сброс фильтров
-resetBtn.addEventListener('click', async () => {
-  form.reset();
-  await loadProjects(); // Загрузка всех
-});
-
-// Первичная загрузка
-document.addEventListener('DOMContentLoaded', () => {
-  loadProjects();
 });
