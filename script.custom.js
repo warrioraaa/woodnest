@@ -21,7 +21,7 @@ async function loadProjects(filters = {}) {
     return;
   }
 
-  if (data.length === 0) {
+  if (!data || data.length === 0) {
     container.innerHTML = '<p>Проекты не найдены.</p>';
     return;
   }
@@ -56,5 +56,14 @@ document.addEventListener('DOMContentLoaded', () => {
       area: isNaN(area) ? null : area,
       price: isNaN(price) ? null : price
     });
+  });
+
+  const resetBtn = document.getElementById('reset-filters');
+  resetBtn.addEventListener('click', () => {
+    document.getElementById('type').value = '';
+    document.getElementById('material').value = '';
+    document.getElementById('area').value = '';
+    document.getElementById('price').value = '';
+    loadProjects(); // Показать все проекты
   });
 });
